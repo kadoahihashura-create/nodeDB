@@ -1,0 +1,6 @@
+"users" 
+ "id" | uint64 | true | false 
+ "name" | string | false | false 
+ "age" | uint8 | false | false 
+ "address_id" | uint64 | false | true | addresses 
+  % 

@@ -1,0 +1,563 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>NODE SERVER CONSOLE</title>
+
+	<style>
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html,
+		body {
+			margin: 0;
+			width: 100%;
+			height: 100%;
+
+			background: #008080;
+			color: #000;
+
+			font-family: "MS Sans Serif", Tahoma, Arial, sans-serif;
+			font-size: 12px;
+		}
+
+		body {
+			padding: 10px;
+		}
+
+		.window {
+			width: 100%;
+			height: 100%;
+
+			display: flex;
+			flex-direction: column;
+
+			background: #c0c0c0;
+
+			border-top: 2px solid #ffffff;
+			border-left: 2px solid #ffffff;
+			border-right: 2px solid #000000;
+			border-bottom: 2px solid #000000;
+		}
+
+		.title-bar {
+			height: 24px;
+
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			padding: 2px 3px 2px 6px;
+
+			background: #000080;
+			color: white;
+
+			font-weight: bold;
+		}
+
+		.title {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+		}
+
+		.title-icon {
+			width: 14px;
+			height: 14px;
+
+			background: #c0c0c0;
+
+			border-top: 1px solid white;
+			border-left: 1px solid white;
+			border-right: 1px solid #000;
+			border-bottom: 1px solid #000;
+
+			color: #000;
+			font-size: 9px;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.window-buttons {
+			display: flex;
+			gap: 2px;
+		}
+
+		.window-button {
+			width: 18px;
+			height: 18px;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			background: #c0c0c0;
+			color: #000;
+
+			border-top: 2px solid white;
+			border-left: 2px solid white;
+			border-right: 2px solid #000;
+			border-bottom: 2px solid #000;
+
+			font-size: 11px;
+			font-weight: bold;
+			line-height: 1;
+		}
+
+		.menu-bar {
+			height: 24px;
+
+			display: flex;
+			align-items: center;
+
+			padding-left: 5px;
+
+			background: #c0c0c0;
+
+			border-bottom: 1px solid #808080;
+		}
+
+		.menu {
+			padding: 3px 8px;
+		}
+
+		.menu:first-letter {
+			text-decoration: underline;
+		}
+
+		.main {
+			flex: 1;
+
+			display: flex;
+			min-height: 0;
+
+			padding: 8px;
+
+			gap: 8px;
+		}
+
+		.sidebar {
+			width: 190px;
+			flex-shrink: 0;
+
+			padding: 8px;
+
+			background: #c0c0c0;
+
+			border-top: 2px solid #808080;
+			border-left: 2px solid #808080;
+			border-right: 2px solid white;
+			border-bottom: 2px solid white;
+		}
+
+		.group {
+			margin-bottom: 12px;
+		}
+
+		.group-title {
+			margin-bottom: 5px;
+
+			font-weight: bold;
+		}
+
+		.info-row {
+			display: flex;
+			justify-content: space-between;
+
+			padding: 3px 2px;
+		}
+
+		.status-online {
+			color: #008000;
+			font-weight: bold;
+		}
+
+		.memory {
+			height: 15px;
+
+			background: #fff;
+
+			border-top: 2px solid #808080;
+			border-left: 2px solid #808080;
+			border-right: 2px solid white;
+			border-bottom: 2px solid white;
+
+			padding: 2px;
+		}
+
+		.memory-bar {
+			width: 37%;
+			height: 100%;
+
+			background: #000080;
+		}
+
+		.console-window {
+			flex: 1;
+			min-width: 0;
+			min-height: 0;
+
+			display: flex;
+			flex-direction: column;
+
+			background: #000;
+
+			border-top: 2px solid #808080;
+			border-left: 2px solid #808080;
+			border-right: 2px solid white;
+			border-bottom: 2px solid white;
+		}
+
+		.console-header {
+			height: 24px;
+
+			display: flex;
+			align-items: center;
+
+			padding: 3px 6px;
+
+			background: #c0c0c0;
+			color: #000;
+
+			font-weight: bold;
+		}
+
+		.output {
+			flex: 1;
+
+			padding: 8px;
+
+			overflow-y: auto;
+
+			background: #000;
+			color: #c0c0c0;
+
+			font-family: "Courier New", monospace;
+			font-size: 13px;
+			line-height: 1.5;
+		}
+
+		.line {
+			white-space: pre-wrap;
+		}
+
+		.time {
+			color: #808080;
+		}
+
+		.info {
+			color: #c0c0c0;
+		}
+
+		.ready {
+			color: #00ff00;
+		}
+
+		.warning {
+			color: #ffff00;
+		}
+
+		.error {
+			color: #ff0000;
+		}
+
+		.prompt {
+			color: #00ff00;
+		}
+
+		.command-line {
+			height: 25px;
+
+			display: flex;
+			align-items: center;
+
+			padding: 2px 6px;
+
+			background: #000;
+			color: #00ff00;
+
+			border-top: 1px solid #404040;
+		}
+
+		.command-line input {
+			flex: 1;
+
+			border: 0;
+			outline: 0;
+
+			background: #000;
+			color: #00ff00;
+
+			font-family: "Courier New", monospace;
+			font-size: 13px;
+		}
+
+		.status-bar {
+			height: 22px;
+
+			display: flex;
+
+			padding: 2px 4px;
+
+			background: #c0c0c0;
+		}
+
+		.status-field {
+			padding: 2px 7px;
+
+			border-top: 1px solid #808080;
+			border-left: 1px solid #808080;
+			border-right: 1px solid white;
+			border-bottom: 1px solid white;
+		}
+
+		.status-field:first-child {
+			flex: 1;
+		}
+
+		@media (max-width: 650px) {
+
+			.sidebar {
+				display: none;
+			}
+
+			body {
+				padding: 0;
+			}
+
+		}
+
+	</style>
+</head>
+
+<body>
+
+	<div class="window">
+
+		<div class="title-bar">
+
+			<div class="title">
+
+				<div class="title-icon">
+					&gt;_
+				</div>
+
+				NODE SERVER CONSOLE
+
+			</div>
+
+			<div class="window-buttons">
+
+				<div class="window-button">
+					_
+				</div>
+
+				<div class="window-button">
+					□
+				</div>
+
+				<div class="window-button">
+					×
+				</div>
+
+			</div>
+
+		</div>
+
+
+		<div class="menu-bar">
+
+			<div class="menu">
+				File
+			</div>
+
+			<div class="menu">
+				Server
+			</div>
+
+			<div class="menu">
+				View
+			</div>
+
+			<div class="menu">
+				Help
+			</div>
+
+		</div>
+
+
+		<div class="main">
+
+			<aside class="sidebar">
+
+				<div class="group">
+
+					<div class="group-title">
+						Server Information
+					</div>
+
+					<div class="info-row">
+						<span>Status:</span>
+						<span class="status-online">
+							ONLINE
+						</span>
+					</div>
+
+					<div class="info-row">
+						<span>Port:</span>
+						<span>3000</span>
+					</div>
+
+					<div class="info-row">
+						<span>PID:</span>
+						<span>----</span>
+					</div>
+
+					<div class="info-row">
+						<span>Uptime:</span>
+						<span>00:00:00</span>
+					</div>
+
+				</div>
+
+
+				<div class="group">
+
+					<div class="group-title">
+						Memory
+					</div>
+
+					<div class="info-row">
+						<span>Used:</span>
+						<span>37 MB</span>
+					</div>
+
+					<div class="memory">
+						<div class="memory-bar"></div>
+					</div>
+
+				</div>
+
+
+				<div class="group">
+
+					<div class="group-title">
+						Database
+					</div>
+
+					<div class="info-row">
+						<span>nodeDB:</span>
+						<span class="status-online">
+							READY
+						</span>
+					</div>
+
+					<div class="info-row">
+						<span>Tables:</span>
+						<span>4</span>
+					</div>
+
+					<div class="info-row">
+						<span>Records:</span>
+						<span>128</span>
+					</div>
+
+				</div>
+
+			</aside>
+
+
+			<section class="console-window">
+
+				<div class="console-header">
+					CONSOLE OUTPUT
+				</div>
+
+
+				<div class="output">
+
+					<div class="line">
+						<span class="time">[19:32:01]</span>
+						<span class="info">INFO</span>
+						Starting Node.js server...
+					</div>
+
+					<div class="line">
+						<span class="time">[19:32:01]</span>
+						<span class="ready">READY</span>
+						Server listening on port 3000.
+					</div>
+
+					<div class="line">
+						<span class="time">[19:32:02]</span>
+						<span class="info">INFO</span>
+						nodeDB initialized successfully.
+					</div>
+
+					<div class="line">
+						<span class="time">[19:32:03]</span>
+						<span class="info">INFO</span>
+						Waiting for connections...
+					</div>
+
+					<div class="line">
+						<span class="time">[19:32:05]</span>
+						<span class="info">INFO</span>
+						Client connected: 127.0.0.1
+					</div>
+
+					<br>
+
+					<div class="line">
+						<span class="prompt">C:\SERVER&gt;</span>
+					</div>
+
+				</div>
+
+
+				<div class="command-line">
+
+					<span>C:\SERVER&gt;&nbsp;</span>
+
+					<input
+						type="text"
+						autocomplete="off"
+					>
+
+				</div>
+
+			</section>
+
+		</div>
+
+
+		<div class="status-bar">
+
+			<div class="status-field">
+				Ready
+			</div>
+
+			<div class="status-field">
+				INS
+			</div>
+
+			<div class="status-field">
+				CPU: 12%
+			</div>
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>
+

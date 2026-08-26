@@ -1,0 +1,14 @@
+estrutura schema:
+
+[nome_da_tabela] [separador_tabela_nome] [titulo_da_coluna] [tipo (int8)] [pk (bool)] [fk (bool)] {caso seja fk [from_file]} [separador_de_colunas] ...próxima coluna... [fim]
+
+estrutura do registro:
+
+[nome_da_tabela] [separador] [nome_da_coluna] [separador] [chave1] [separador] [chave2] [separador] [chave3] [separador_para_o_proximo_registro] ...repete para as chaves... [fim]
+
+intiator.exe -
+
+--version
+--start
+
+arquivos: "f:file_name"
