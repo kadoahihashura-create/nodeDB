@@ -16,7 +16,7 @@ async function tick() {
 
 const config = {
 	isReady: false,
-	name: "nodeDB"
+	name: ""
 }
 
 const registerTypes = Object.freeze({
@@ -80,12 +80,14 @@ function verifyRowValidity(row) {
 
 function start(name, port = 127) {
 	
-	if (name !== undefined) {
-		config.name = name;
-	} else {
-		name = config.name;
-	}
+	if (name == undefined) name = "nodeDBDefault";
 
+	if (typeof name !== "string" || name.length == 0) {
+		
+		throw new Error("Name must be a non-empty string.");
+		
+	}
+	
 	try {
 
 		if (!fsSync.existsSync(name)) {
