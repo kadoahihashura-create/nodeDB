@@ -119,6 +119,47 @@ function verifyRowValidity(row) {
 
 }
 
+function createRow(name, type, pk = false, fk = false, fkReferencesTo) {
+
+	if (typeof name !== "string" || name.length === 0) {
+		throw new Error("Row name must be a non-empty string.");
+	}
+
+	if (!Object.values(registerTypes).includes(type)) {
+		throw new Error("Invalid row type.");
+	}
+
+	if (typeof pk !== "boolean") {
+		throw new Error("Primary key must be a boolean.");
+	}
+
+	if (typeof fk !== "boolean") {
+		throw new Error("Foreign key must be a boolean.");
+	}
+
+	if (fk === true) {
+
+		if (typeof fkReferencesTo !== "string" || fkReferencesTo.length === 0) {
+			throw new Error("Foreign key reference must be a non-empty string.");
+		}
+
+		return {
+			name,
+			type,
+			pk,
+			fk,
+			fkReferencesTo
+		};
+
+	}
+
+	return {
+		name,
+		type,
+		pk,
+		fk
+	};
+}
 
 
 async function createSchema(name, rows) {
