@@ -87,6 +87,8 @@ function start(name, port = 127) {
 		throw new Error("Name must be a non-empty string.");
 		
 	}
+
+	config.name = name;
 	
 	try {
 
