@@ -78,7 +78,7 @@ function verifyRowValidity(row) {
 
 }
 
-function start(port = 127 ,name) {
+function start(name, port = 127) {
 	
 	if (name !== undefined) {
 		config.name = name;
@@ -95,7 +95,9 @@ function start(port = 127 ,name) {
 		}
 
 	} catch (err) {
-		console.log(err);
+
+		throw err;
+		
 	}
 	config.isReady = true;
 }
