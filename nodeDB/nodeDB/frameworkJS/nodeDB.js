@@ -114,10 +114,6 @@ async function createSchema(name, rows) {
 		throw new Error("Rows must be an array!");
 	}
 
-	if (!config.isReady) {
-		start();
-	}
-
 	let final = "\"" + name + "\" \n ";
 
 	const usedNames = new Set();
