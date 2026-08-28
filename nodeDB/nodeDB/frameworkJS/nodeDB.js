@@ -1,24 +1,6 @@
 import fs from "node:fs/promises";
 import fsSync from "node:fs";
 import http from "node:http";
-
-const localServer = http.createServer((req, res) => {
-
-
-
-});
-
-async function tick() {
-	
-	
-
-}
-
-const config = {
-	isReady: false,
-	name: ""
-}
-
 const registerTypes = Object.freeze({
 
 	int8: 0,
@@ -43,6 +25,65 @@ const registerTypes = Object.freeze({
 	bin: 13
 
 });
+
+const config = {
+	isReady: false,
+	name: "",
+    port: undefined
+}
+
+function start(name, port = 127) {
+	
+	if (name == undefined) name = "nodeDBDefault";
+
+	if (typeof name !== "string" || name.length == 0) {
+		
+		throw new Error("Name must be a non-empty string.");
+		
+	}
+
+    if (typeof port !== "number" || (port < 1 || port > 65535)) {
+        throw new Error("Please, use a valid port!");
+    }
+
+    config.port = port;
+	config.name = name;
+	
+	try {
+
+		if (!fsSync.existsSync(name)) {
+
+			fsSync.mkdirSync(name);
+
+		}
+
+	} catch (err) {
+
+		throw err;
+		
+	}
+    
+	config.isReady = true;
+}
+
+function isReady() {
+	if (!config.isReady) {
+		throw new Error("Nothing has been prepared. Please use the \"start()\" function.");
+	}
+}
+
+const localServer = http.createServer((req, res) => {
+
+	// unfinished. Waiting for index page! (:
+
+});
+
+function debugServerListen() {
+
+	isReady();
+	localServer.listen(config.port, "localhost");
+	
+}
 
 function verifyRowValidity(row) {
 
@@ -78,39 +119,11 @@ function verifyRowValidity(row) {
 
 }
 
-function start(name, port = 127) {
-	
-	if (name == undefined) name = "nodeDBDefault";
 
-	if (typeof name !== "string" || name.length == 0) {
-		
-		throw new Error("Name must be a non-empty string.");
-		
-	}
-
-	config.name = name;
-	
-	try {
-
-		if (!fsSync.existsSync(name)) {
-
-			fsSync.mkdirSync(name);
-
-		}
-
-	} catch (err) {
-
-		throw err;
-		
-	}
-	config.isReady = true;
-}
 
 async function createSchema(name, rows) {
 
-	if (!config.isReady) {
-		throw new Error("Nothing has been prepared. Please use the \"start()\" function.");
-	}
+	isReady();	
 
 	if (typeof name !== "string" || name.length === 0) {
 		throw new Error("Wrong type given for schema name!");
@@ -176,6 +189,6 @@ export default {
 	start,
 	createSchema,
 	registerTypes,
-	localServer
+    debugServerListen    
 
 }
