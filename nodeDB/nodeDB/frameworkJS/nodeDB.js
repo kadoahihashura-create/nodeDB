@@ -79,7 +79,7 @@ function verifyRowValidity(row) {
 }
 
 function start(port = 127 ,name) {
-
+	
 	if (name !== undefined) {
 		config.name = name;
 	} else {
@@ -97,6 +97,7 @@ function start(port = 127 ,name) {
 	} catch (err) {
 		console.log(err);
 	}
+	config.isReady = true;
 }
 
 async function createSchema(name, rows) {
